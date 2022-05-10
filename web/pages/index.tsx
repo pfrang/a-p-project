@@ -5,34 +5,18 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import React from 'react';
 import List from './components/list';
-
+Table
 import { GetBikes } from '../api-client/endpoints/bikes'
+import Table from './components/table';
+import { useBikeData } from './context/context';
+
 
 const Home: NextPage = () => {
 
-  const [bikeData, setBikeData] = useState([])
-
-  // useEffect(() => {
-  //   console.log(data)
-  // },[data])
-
-  // useEffect(() => {
-  //   console.log("hi")
-  //   popArray.push(<p>{"yo"}</p>)
-  //   console.log(popArray)
-  // }, [data])
-  // useEffect(() => {
-  //   for (const [index, value] of data.entries()) {
-  //     popArray.push(<p>{"yo"}</p>)
-  //   }
-  // },[data])
-  // useEffect(() => {
-  //   console.log(bikeData)
-  // }, [bikeData])
+  const { bikeData, setBikeData } = useBikeData()
 
   const handleClick = async () => {
     const res = await GetBikes()
-    console.log(res)
     setBikeData(res.data.nb.feeds)
 
     // setData(JSON.stringify(response))
@@ -47,15 +31,7 @@ const Home: NextPage = () => {
       <div className='flex justify-center'>
         <div className='text-center'>
           <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={handleClick}>Fetch Bikes</button>
-          <table>
-            <tbody>
-              {bikeData.map((item, idx) => {
-                return (
-                  <List key={idx} feat={item} />
-                )
-              })}
-            </tbody>
-          </table>
+          {bikeData ? <Table data={bikeData} /> : "" }
         </div>
       </div>
     </div>
